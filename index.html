@@ -47,19 +47,19 @@
     </header>
     <main class="page-shell">
       <section class="project-heading">
-        <div><p class="eyebrow">ภาพรวมโปรเจกต์</p><h1>Hugcode <span class="title-divider">/</span> <span>ติดตามงานทีม</span></h1><p class="muted">พื้นที่รวมงานของทีม ช่วยให้ทุกคนเห็นความคืบหน้าและสิ่งที่ต้องทำต่อ</p></div>
-        <button id="addTaskButton" class="button primary" type="button"><span aria-hidden="true">＋</span> เพิ่มงาน</button>
+        <div class="project-copy"><p class="eyebrow"><span class="eyebrow-mark" aria-hidden="true">✳</span> WORKSPACE <span class="eyebrow-separator">/</span> ภาพรวมโปรเจกต์</p><h1>Hugcode <span class="title-divider">/</span> <span>ติดตามงานทีม</span></h1><p class="muted">เห็นภาพรวมงานของทีม พร้อมติดตามความคืบหน้าได้ในที่เดียว</p></div>
+        <button id="addTaskButton" class="button primary add-task-button" type="button"><span class="add-icon" aria-hidden="true">＋</span> เพิ่มงาน</button>
       </section>
       <section class="overview" aria-label="สรุปงาน">
-        <article class="overview-card"><span class="overview-icon blue" aria-hidden="true">▤</span><div><span class="overview-label">งานทั้งหมด</span><strong id="totalTasks">0</strong></div></article>
-        <article class="overview-card"><span class="overview-icon violet" aria-hidden="true">◷</span><div><span class="overview-label">กำลังดำเนินการ</span><strong id="activeTasks">0</strong></div></article>
-        <article class="overview-card sync-card"><span class="overview-icon green" aria-hidden="true">↻</span><div><span class="overview-label">ซิงก์ล่าสุด</span><strong id="lastSync">—</strong></div></article>
+        <article class="overview-card"><span class="overview-icon blue" aria-hidden="true">▤</span><div><span class="overview-label">งานทั้งหมด</span><strong id="totalTasks">0</strong><span class="overview-note">ทุกสถานะในบอร์ด</span></div></article>
+        <article class="overview-card"><span class="overview-icon violet" aria-hidden="true">◷</span><div><span class="overview-label">กำลังดำเนินการ</span><strong id="activeTasks">0</strong><span class="overview-note">งานที่ทีมกำลังทำอยู่</span></div></article>
+        <article class="overview-card sync-card"><span class="overview-icon green" aria-hidden="true">↻</span><div><span class="overview-label">ซิงก์ล่าสุด</span><strong id="lastSync">—</strong><span class="overview-note">ข้อมูลสำรองในเบราว์เซอร์</span></div></article>
       </section>
       <section class="toolbar" aria-label="ค้นหาและกรองงาน">
         <label class="search-box"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="ค้นหาชื่องาน รายละเอียด หรือโมดูล…" aria-label="ค้นหางาน"></label>
-        <label class="filter-select"><span class="sr-only">กรองตามผู้รับผิดชอบ</span><select id="assigneeFilter"><option value="">ผู้รับผิดชอบทั้งหมด</option></select></label>
-        <label class="filter-date"><span class="sr-only">กรองวันที่มอบหมายตั้งแต่</span><input id="assignedFrom" type="date" aria-label="วันที่มอบหมายตั้งแต่"></label>
-        <label class="filter-date"><span class="sr-only">กรองกำหนดส่งถึง</span><input id="dueTo" type="date" aria-label="กำหนดส่งถึง"></label>
+        <label class="filter-select"><span class="filter-caption">ผู้รับผิดชอบ</span><select id="assigneeFilter"><option value="">ทุกคน</option></select></label>
+        <label class="filter-date"><span class="filter-caption">มอบหมายตั้งแต่</span><input id="assignedFrom" type="date" aria-label="วันที่มอบหมายตั้งแต่"></label>
+        <label class="filter-date"><span class="filter-caption">กำหนดส่งถึง</span><input id="dueTo" type="date" aria-label="กำหนดส่งถึง"></label>
         <button id="clearFilters" class="button quiet" type="button">ล้างตัวกรอง</button>
         <button id="exportButton" class="button secondary export-button" type="button" aria-label="ส่งออกงานเป็นไฟล์ Excel"><span aria-hidden="true">⇩</span> ส่งออก Excel</button>
         <button id="settingsButton" class="icon-button settings-button" type="button" aria-label="จัดการรายการตัวเลือก" title="จัดการรายการตัวเลือก">⚙</button>

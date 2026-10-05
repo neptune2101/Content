@@ -87,7 +87,7 @@
   function render() {
     if ($("appView").hidden) return;
     const filtered = filteredTasks(); $("totalTasks").textContent = state.tasks.length; $("activeTasks").textContent = state.tasks.filter(t => t.status === "กำลังดำเนินการ").length;
-    const select = $("assigneeFilter"), old = select.value; select.innerHTML = '<option value="">ผู้รับผิดชอบทั้งหมด</option>' + state.options.assignees.map(name => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join(""); if (state.options.assignees.includes(old)) select.value = old;
+    const select = $("assigneeFilter"), old = select.value; select.innerHTML = '<option value="">ทุกคน</option>' + state.options.assignees.map(name => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join(""); if (state.options.assignees.includes(old)) select.value = old;
     const board = $("board"); board.innerHTML = state.options.statuses.map(status => {
       const items = filtered.filter(task => task.status === status);
       return `<section class="board-column" data-status="${escapeHtml(status)}" aria-label="${escapeHtml(status)}"><div class="column-heading"><div class="column-name"><span class="column-dot" aria-hidden="true"></span>${escapeHtml(status)}<span class="column-badge">${items.length}</span></div></div><div class="column-list" data-status="${escapeHtml(status)}">${items.length ? items.map(renderCard).join("") : `<div class="empty-column">${filtered.length ? "ไม่มีงานในสถานะนี้" : (state.tasks.length ? "ไม่พบงานที่ตรงกับตัวกรอง" : "ลากงานมาวางที่นี่")}</div>`}</div></section>`;
