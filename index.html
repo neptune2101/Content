@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f7fb">
+  <meta name="description" content="Hugcode — ภาพรวมงานและการติดตามงานของทีม">
+  <title>Hugcode | ติดตามงานทีม</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="authView" class="auth-shell" hidden>
+    <section class="auth-card" aria-labelledby="authTitle">
+      <a class="brand auth-brand" href="#" aria-label="Hugcode หน้าแรก"><span class="brand-mark">H</span><span>hugcode</span></a>
+      <p class="eyebrow">TEAM WORKSPACE</p>
+      <h1 id="authTitle">ยินดีต้อนรับกลับมา</h1>
+      <p class="muted">เข้าสู่ระบบเพื่อเปิดบอร์ดงานที่ใช้ร่วมกันของทีม</p>
+      <form id="authForm" class="stack-form">
+        <label for="authEmail">อีเมล</label><input id="authEmail" type="email" autocomplete="email" required placeholder="you@example.com">
+        <label for="authPassword">รหัสผ่าน</label><input id="authPassword" type="password" autocomplete="current-password" required minlength="6" placeholder="อย่างน้อย 6 ตัวอักษร">
+        <div id="authError" class="form-error" role="alert" aria-live="polite"></div>
+        <button id="authSubmit" class="button primary full" type="submit">เข้าสู่ระบบ</button>
+      </form>
+      <button id="toggleAuthMode" class="text-button full" type="button">ยังไม่มีบัญชี? สมัครสมาชิก</button>
+      <p class="auth-note">ต้องตั้งค่า Supabase ใน <code>supabase-config.js</code> ก่อนใช้งาน</p>
+    </section>
+  </div>
+  <div id="setupView" class="auth-shell" hidden>
+    <section class="auth-card setup-card">
+      <a class="brand auth-brand" href="#"><span class="brand-mark">H</span><span>hugcode</span></a>
+      <p class="eyebrow">เริ่มต้นใช้งาน</p><h1>ตั้งค่า Supabase</h1>
+      <p class="muted">เพิ่ม Project URL และ publishable/anon key ในไฟล์ <code>supabase-config.js</code> แล้วโหลดหน้านี้ใหม่ บอร์ดที่ใช้ร่วมกันจะต้องเข้าสู่ระบบก่อนใช้งาน</p>
+      <ol class="setup-steps"><li>สร้างโปรเจกต์ Supabase และรัน SQL จาก <code>supabase/schema.sql</code></li><li>ใส่ URL และ publishable/anon key ในไฟล์ตั้งค่า</li><li>เปิด Email provider ใน Authentication แล้วสมัครบัญชีทีม</li></ol>
+      <div class="setup-actions"><button id="previewButton" class="button secondary" type="button">ดูบอร์ดตัวอย่างในเครื่อง</button><span class="muted small">ข้อมูลตัวอย่างอยู่ในเบราว์เซอร์นี้เท่านั้น</span></div>
+      <div id="setupError" class="form-error" role="alert"></div>
+    </section>
+  </div>
+  <div id="appView" hidden>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="#" aria-label="Hugcode"><span class="brand-mark">H</span><span>hugcode</span></a>
+        <div class="topbar-right"><div id="connectionStatus" class="connection" role="status"><span class="status-dot"></span><span>กำลังเชื่อมต่อ</span></div><span id="userEmail" class="user-email"></span><button id="signOutButton" class="icon-button" type="button" aria-label="ออกจากระบบ" title="ออกจากระบบ">↗</button></div>
+      </div>
+    </header>
+    <main class="page-shell">
+      <section class="project-heading">
+        <div><p class="eyebrow">ภาพรวมโปรเจกต์</p><h1>Hugcode <span class="title-divider">/</span> <span>ติดตามงานทีม</span></h1><p class="muted">พื้นที่รวมงานของทีม ช่วยให้ทุกคนเห็นความคืบหน้าและสิ่งที่ต้องทำต่อ</p></div>
+        <button id="addTaskButton" class="button primary" type="button"><span aria-hidden="true">＋</span> เพิ่มงาน</button>
+      </section>
+      <section class="overview" aria-label="สรุปงาน">
+        <article class="overview-card"><span class="overview-icon blue" aria-hidden="true">▤</span><div><span class="overview-label">งานทั้งหมด</span><strong id="totalTasks">0</strong></div></article>
+        <article class="overview-card"><span class="overview-icon violet" aria-hidden="true">◷</span><div><span class="overview-label">กำลังดำเนินการ</span><strong id="activeTasks">0</strong></div></article>
+        <article class="overview-card sync-card"><span class="overview-icon green" aria-hidden="true">↻</span><div><span class="overview-label">ซิงก์ล่าสุด</span><strong id="lastSync">—</strong></div></article>
+      </section>
+      <section class="toolbar" aria-label="ค้นหาและกรองงาน">
+        <label class="search-box"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="ค้นหาชื่องาน รายละเอียด หรือโมดูล…" aria-label="ค้นหางาน"></label>
+        <label class="filter-select"><span class="sr-only">กรองตามผู้รับผิดชอบ</span><select id="assigneeFilter"><option value="">ผู้รับผิดชอบทั้งหมด</option></select></label>
+        <label class="filter-date"><span class="sr-only">กรองวันที่มอบหมายตั้งแต่</span><input id="assignedFrom" type="date" aria-label="วันที่มอบหมายตั้งแต่"></label>
+        <label class="filter-date"><span class="sr-only">กรองกำหนดส่งถึง</span><input id="dueTo" type="date" aria-label="กำหนดส่งถึง"></label>
+        <button id="clearFilters" class="button quiet" type="button">ล้างตัวกรอง</button>
+        <button id="exportButton" class="button secondary export-button" type="button" aria-label="ส่งออกงานเป็นไฟล์ Excel"><span aria-hidden="true">⇩</span> ส่งออก Excel</button>
+        <button id="settingsButton" class="icon-button settings-button" type="button" aria-label="จัดการรายการตัวเลือก" title="จัดการรายการตัวเลือก">⚙</button>
+      </section>
+      <section id="board" class="board" aria-label="บอร์ดงาน Kanban"></section>
+      <footer class="app-footer"><span>Hugcode Workboard</span><span id="storageNote">ข้อมูลซิงก์กับทีมและสำรองในเครื่อง</span></footer>
+    </main>
+  </div>
+  <dialog id="taskDialog" class="dialog task-dialog" aria-labelledby="taskDialogTitle">
+    <form id="taskForm" method="dialog" class="dialog-form">
+      <div class="dialog-header"><div><p class="eyebrow">WORK ITEM</p><h2 id="taskDialogTitle">เพิ่มงานใหม่</h2></div><button class="icon-button close-dialog" type="button" aria-label="ปิด">×</button></div>
+      <input id="taskId" type="hidden">
+      <div class="form-grid">
+        <div class="field wide"><label for="taskTitle">ชื่องาน <span class="required">*</span></label><input id="taskTitle" required maxlength="120" placeholder="เช่น ปรับหน้าสรุปยอดคำสั่งซื้อ"></div>
+        <div class="field"><label for="taskModule">โมดูล</label><select id="taskModule"></select></div>
+        <div class="field"><label for="taskStatus">สถานะ</label><select id="taskStatus"></select></div>
+        <div class="field wide"><label for="taskDescription">รายละเอียด</label><textarea id="taskDescription" rows="3" maxlength="1200" placeholder="รายละเอียดหรือบริบทเพิ่มเติม"></textarea></div>
+        <div class="field"><label for="taskAssignee">ผู้รับผิดชอบ</label><select id="taskAssignee"></select></div>
+        <div class="field"><label for="taskAssigner">ผู้มอบหมาย</label><select id="taskAssigner"></select></div>
+        <div class="field"><label for="taskPriority">ระดับความสำคัญ</label><select id="taskPriority"><option>ต่ำ</option><option selected>ปานกลาง</option><option>สูง</option></select></div>
+        <div class="field"><label for="taskDueDate">กำหนดส่ง</label><input id="taskDueDate" type="date"></div>
+        <div class="field wide"><label for="taskTags">แท็กย่อย <span class="hint">คั่นแต่ละแท็กด้วยจุลภาค</span></label><input id="taskTags" placeholder="ออกแบบ, API, เร่งด่วน"></div>
+      </div>
+      <div id="taskFormError" class="form-error" role="alert"></div>
+      <div class="dialog-actions"><button class="button secondary cancel-dialog" type="button">ยกเลิก</button><button class="button primary" type="submit">บันทึกงาน</button></div>
+    </form>
+  </dialog>
+  <dialog id="detailDialog" class="dialog detail-dialog" aria-labelledby="detailTitle"><div id="detailContent"></div></dialog>
+  <dialog id="settingsDialog" class="dialog settings-dialog" aria-labelledby="settingsTitle">
+    <div class="dialog-header"><div><p class="eyebrow">WORKSPACE SETTINGS</p><h2 id="settingsTitle">จัดการรายการ</h2></div><button class="icon-button close-dialog" type="button" aria-label="ปิด">×</button></div>
+    <p class="muted small">แก้ไขตัวเลือกที่ใช้ในฟอร์มงาน สมาชิกหรือสถานะที่มีงานอยู่จะไม่สามารถลบได้</p>
+    <div id="settingsContent" class="settings-content"></div>
+  </dialog>
+  <div id="toastRegion" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <script src="supabase-config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
